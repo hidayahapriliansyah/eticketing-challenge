@@ -1,0 +1,6 @@
+@ETicketing_HostAddress = http://localhost:5160
+
+GET {{ETicketing_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
