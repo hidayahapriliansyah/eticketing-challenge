@@ -132,5 +132,71 @@ public class ETicketingDbContext(DbContextOptions<ETicketingDbContext> options) 
                     Password = "8cb671ed74c9c851fee146b8e0c3d951feb9dcccbdd92203316d6259c77c2744", // sangatrahasia
                 }
             );
+
+        var eventId1 = Guid.NewGuid();
+        var eventId2 = Guid.NewGuid();
+        var eventId3 = Guid.NewGuid();
+        var eventId4 = Guid.NewGuid();
+        var eventId5 = Guid.NewGuid();
+
+        modelBuilder
+            .Entity<Event>()
+            .HasData(
+                new Event
+                {
+                    Id = eventId1,
+                    Name = "Concert Night",
+                    Description = "A grand concert to enjoy the night",
+                    EventDate = new DateTime(2024, 12, 25, 18, 0, 0),
+                    Location = "Stadium A",
+                    MaxParticipants = 500,
+                    TicketPrice = 100000,
+                    Status = Models.Event.EventStatus.Published,
+                },
+                new Event
+                {
+                    Id = eventId2,
+                    Name = "Tech Expo",
+                    Description = "Explore the latest tech innovations",
+                    EventDate = new DateTime(2024, 11, 20, 9, 0, 0),
+                    Location = "Expo Center",
+                    MaxParticipants = 300,
+                    TicketPrice = 100000,
+                    Status = Models.Event.EventStatus.Unpublished,
+                },
+                new Event
+                {
+                    Id = eventId3,
+                    Name = "Startup Workshop",
+                    Description = "A workshop to boost your startup skills",
+                    EventDate = new DateTime(2024, 11, 15, 10, 0, 0),
+                    Location = "Startup Hub",
+                    MaxParticipants = 150,
+                    TicketPrice = 50000,
+                    Status = Models.Event.EventStatus.Unpublished,
+                },
+                new Event
+                {
+                    Id = eventId4,
+                    Name = "Yoga Retreat",
+                    Description = "Relax and rejuvenate with yoga",
+                    EventDate = new DateTime(2025, 1, 10, 8, 0, 0),
+                    Location = "Wellness Resort",
+                    MaxParticipants = 200,
+                    TicketPrice = 150000,
+                    Status = Models.Event.EventStatus.Published,
+                },
+                new Event
+                {
+                    Id = eventId5,
+                    Name = "Music Festival",
+                    Description = "Join us for a music extravaganza",
+                    EventDate = new DateTime(2024, 12, 31, 20, 0, 0),
+                    Location = "City Park",
+                    MaxParticipants = 1000,
+                    TicketPrice = 200000,
+                    Status = Models.Event.EventStatus.Published,
+                }
+            );
     }
 }

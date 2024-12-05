@@ -10,6 +10,9 @@ public class Event : Base
     [Column(name: "id")]
     public Guid Id { get; set; }
 
+    [Column(name: "name")]
+    public string Name { get; set; } = null!;
+
     [Column(name: "description")]
     public string Description { get; set; } = null!;
 

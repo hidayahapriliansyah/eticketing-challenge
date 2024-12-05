@@ -17,7 +17,9 @@ public class AuthController(JwtService jwtService, ETicketingDbContext dbContext
     private readonly ETicketingDbContext _dbContext = dbContext;
 
     [HttpPost("admin/login")]
-    public async Task<IActionResult> AdminLogin([FromBody] LoginRequest request)
+    public async Task<ActionResult<ApiResponse<LoginResponse>>> AdminLogin(
+        [FromBody] LoginRequest request
+    )
     {
         if (
             request == null
