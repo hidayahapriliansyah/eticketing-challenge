@@ -64,7 +64,8 @@
           "location": "string",
           "max_participants": "int",
           "additional_info": "string",
-          "ticket_price": "int"
+          "ticket_price": "int",
+          "status": "enum (published, unpublished)"
         }
       }
     }
@@ -234,7 +235,8 @@
               "event": {
                 "id": "",
                 "name": "Event name"
-              }
+              },
+              "code": "23834824293489"
             },
             {
               "ticketId": 2,
@@ -247,7 +249,8 @@
               "event": {
                 "id": "",
                 "name": "Event name"
-              }
+              },
+              "code": "23834824293489"
             }
           ]
         }
@@ -273,6 +276,7 @@
       "data": {
         "ticket": {
           "id": 1,
+          "code": "23834824293489",
           "event": {
             "id": 1,
             "name": "Updated Concert Night",
@@ -290,7 +294,9 @@
             "email": "johndoeemail@gmail.vom"
           },
           "status": "confirmed",
-          "valid_until": "2024-12-25T23:59:59"
+          "valid_until": "2024-12-25T23:59:59",
+          "price": 120000,
+          "created_at": "2024-12-25T23:59:59",
         }
       }
     }

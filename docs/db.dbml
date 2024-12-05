@@ -1,0 +1,69 @@
+Table Admins  {
+  id Guid [pk, Guid]
+
+  created_at timestamp [not null, default: "now()"]
+  updated_at timestamp [default: "updatedAt()"]
+  deleted_at timestamp
+  is_deleted bool [not null, default: false]
+
+  email varchar [not null]
+  password varchar [not null]
+}
+
+Table Customers {
+  id Guid [pk, Guid]
+
+  created_at timestamp [not null, default: "now()"]
+  updated_at timestamp [default: "updatedAt()"]
+  deleted_at timestamp
+  is_deleted bool [not null, default: false]
+
+  name varchar [not null]
+  email varchar [not null, unique]
+  username varchar [not null, unique]
+  password varchar [not null]
+}
+
+Table Events {
+  id Guid [pk, Guid]
+
+  created_at timestamp [not null, default: "now()"]
+  updated_at timestamp [default: "updatedAt()"]
+  deleted_at timestamp
+  is_deleted bool [not null, default: false]
+
+  name varchar [not null]
+  description varchar [not null]
+  event_date timestamp [not null]
+  location varchar [not null]
+  max_participants int [not null]
+  additional_info varchar
+  ticket_price int [not null]
+  status EventStatus [default: "published"]
+}
+
+Enum EventStatus {
+  published
+  unpublished
+}
+
+Table Tickets {
+  id Guid [pk, Guid]
+
+  created_at timestamp [not null, default: "now()"]
+  updated_at timestamp [default: "updatedAt()"]
+  deleted_at timestamp
+  is_deleted bool [not null, default: false]
+
+  code varchar [not null, unique]
+  status TicketStatus [default: "pending"]
+  user_id Guid [not null, ref: > Customers.id]
+  event_id Guid [not null, ref: > Events.id]
+}
+
+Enum TicketStatus {
+  pending
+  expired
+  confirmed
+  cancelled
+}
