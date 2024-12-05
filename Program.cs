@@ -1,6 +1,8 @@
 using eticketing.Application.Security;
+using eticketing.Application.Services;
 using eticketing.Http.Middlewares;
 using eticketing.Infrastructure.Database;
+using eticketing.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +17,8 @@ builder.Services.AddDbContext<ETicketingDbContext>(opt =>
 );
 builder.Services.AddTransient<JwtService>();
 builder.Services.AddTransient<AuthMiddleware>();
+builder.Services.AddTransient<EventService>();
+builder.Services.AddTransient<EventRepository>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
