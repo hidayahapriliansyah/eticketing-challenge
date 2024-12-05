@@ -35,10 +35,10 @@ public class Event : Base
     public EventStatus Status { get; set; }
 
     public List<Ticket> Tickets { get; set; } = [];
+}
 
-    public enum EventStatus
-    {
-        Published,
-        Unpublished,
-    }
+public enum EventStatus
+{
+    Published,
+    Unpublished,
 }

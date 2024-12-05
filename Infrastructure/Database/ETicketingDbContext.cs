@@ -151,7 +151,7 @@ public class ETicketingDbContext(DbContextOptions<ETicketingDbContext> options) 
                     Location = "Stadium A",
                     MaxParticipants = 500,
                     TicketPrice = 100000,
-                    Status = Models.Event.EventStatus.Published,
+                    Status = EventStatus.Published,
                 },
                 new Event
                 {
@@ -162,7 +162,7 @@ public class ETicketingDbContext(DbContextOptions<ETicketingDbContext> options) 
                     Location = "Expo Center",
                     MaxParticipants = 300,
                     TicketPrice = 100000,
-                    Status = Models.Event.EventStatus.Unpublished,
+                    Status = EventStatus.Unpublished,
                 },
                 new Event
                 {
@@ -173,7 +173,7 @@ public class ETicketingDbContext(DbContextOptions<ETicketingDbContext> options) 
                     Location = "Startup Hub",
                     MaxParticipants = 150,
                     TicketPrice = 50000,
-                    Status = Models.Event.EventStatus.Unpublished,
+                    Status = EventStatus.Unpublished,
                 },
                 new Event
                 {
@@ -184,7 +184,7 @@ public class ETicketingDbContext(DbContextOptions<ETicketingDbContext> options) 
                     Location = "Wellness Resort",
                     MaxParticipants = 200,
                     TicketPrice = 150000,
-                    Status = Models.Event.EventStatus.Published,
+                    Status = EventStatus.Published,
                 },
                 new Event
                 {
@@ -195,7 +195,7 @@ public class ETicketingDbContext(DbContextOptions<ETicketingDbContext> options) 
                     Location = "City Park",
                     MaxParticipants = 1000,
                     TicketPrice = 200000,
-                    Status = Models.Event.EventStatus.Published,
+                    Status = EventStatus.Published,
                 }
             );
     }
