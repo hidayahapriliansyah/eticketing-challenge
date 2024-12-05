@@ -14,6 +14,7 @@ builder.Services.AddDbContext<ETicketingDbContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("Default"))
 );
 builder.Services.AddTransient<JwtService>();
+builder.Services.AddTransient<AuthMiddleware>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -21,6 +22,8 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 app.UseExceptionHandler();
+
+app.UseMiddleware<AuthMiddleware>();
 
 app.MapControllers();
 

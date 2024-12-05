@@ -15,6 +15,8 @@ public class EventController(ETicketingDbContext dbContext) : ControllerBase
     [HttpGet]
     public async Task<ActionResult<ApiResponse<GetEventResponse>>> GetEvents()
     {
+        var user = HttpContext.Items["User"];
+
         var events = await _dbContext
             .Set<Event>()
             .Select(e => new EventDTO
