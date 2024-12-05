@@ -40,6 +40,8 @@ public class ETicketingDbContext(DbContextOptions<ETicketingDbContext> options) 
             .Entity<Ticket>()
             .Property(ticket => ticket.Status)
             .HasDefaultValue(eticketing.Models.Ticket.TicketStatus.Pending);
+
+        Seeder(modelBuilder);
     }
 
     private static void GenerateUuid<T>(ModelBuilder modelBuilder, string column)
@@ -108,5 +110,27 @@ public class ETicketingDbContext(DbContextOptions<ETicketingDbContext> options) 
         where T : Base
     {
         modelBuilder.Entity<T>().Property(t => t.CreatedAt).HasDefaultValueSql("GETDATE()");
+    }
+
+    private static void DefaultIsDeleted<T>(ModelBuilder modelBuilder)
+        where T : Base
+    {
+        modelBuilder.Entity<T>().Property(t => t.IsDeleted).HasDefaultValue(false);
+    }
+
+    public void Seeder(ModelBuilder modelBuilder)
+    {
+        var adminId = Guid.NewGuid();
+
+        modelBuilder
+            .Entity<Admin>()
+            .HasData(
+                new Admin
+                {
+                    Id = adminId,
+                    Email = "admin@admin.com",
+                    Password = "8cb671ed74c9c851fee146b8e0c3d951feb9dcccbdd92203316d6259c77c2744", // sangatrahasia
+                }
+            );
     }
 }
