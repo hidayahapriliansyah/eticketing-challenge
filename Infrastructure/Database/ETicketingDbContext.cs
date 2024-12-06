@@ -118,12 +118,6 @@ public class ETicketingDbContext(DbContextOptions<ETicketingDbContext> options) 
         modelBuilder.Entity<T>().Property(t => t.CreatedAt).HasDefaultValueSql("GETDATE()");
     }
 
-    private static void DefaultIsDeleted<T>(ModelBuilder modelBuilder)
-        where T : Base
-    {
-        modelBuilder.Entity<T>().Property(t => t.IsDeleted).HasDefaultValue(false);
-    }
-
     public void Seeder(ModelBuilder modelBuilder)
     {
         var adminId = Guid.NewGuid();

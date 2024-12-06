@@ -12,7 +12,4 @@ public class Base
 
     [Column(name: "deleted_at")]
     public DateTime? DeletedAt { get; set; }
-
-    [Column(name: "is_deleted")]
-    public bool IsDeleted { get; set; }
 }

@@ -126,6 +126,22 @@ public class EventService(EventRepository eventRepository)
         return response;
     }
 
+    public async Task<ApiResponse<object>> SoftDeleteEventByIdAsync(Guid eventId)
+    {
+        var eventItem =
+            await _eventRepository.GetNotDeletedEventById(eventId)
+            ?? throw new NotFoundException("Event is not found");
+
+        await _eventRepository.SoftDeleteEvent(eventItem);
+
+        var response = new ApiResponse<object>
+        {
+            Success = true,
+            Message = "success to delete event",
+        };
+        return response;
+    }
+
     public EventDTO ToEventDTO(Event eventItem)
     {
         return new EventDTO

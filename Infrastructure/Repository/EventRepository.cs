@@ -87,8 +87,24 @@ public class EventRepository(ETicketingDbContext dbContext)
         };
     }
 
+    public async Task SoftDeleteEvent(Event eventToDelete)
+    {
+        eventToDelete.DeletedAt = DateTime.UtcNow;
+        await _dbContext.SaveChangesAsync();
+    }
+
     public async Task<Event?> GetEventByIdAsync(Guid eventId)
     {
         return await _dbContext.Event.FirstOrDefaultAsync(e => e.Id == eventId);
+    }
+
+    public async Task<Event?> GetNotDeletedEventById(Guid eventId)
+    {
+        var eventItem = await GetEventByIdAsync(eventId);
+        if (eventItem == null || eventItem.DeletedAt != null)
+        {
+            return null;
+        }
+        return eventItem;
     }
 }

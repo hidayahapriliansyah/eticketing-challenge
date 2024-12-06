@@ -59,6 +59,14 @@ public class EventController(EventService eventService) : ControllerBase
         return Ok(response);
     }
 
+    [HttpDelete("{eventId}")]
+    [RoleAuthorize("Admin")]
+    public async Task<ActionResult<ApiResponse<object>>> DeleteEventAsync(Guid eventId)
+    {
+        var response = await _eventService.SoftDeleteEventByIdAsync(eventId);
+        return Ok(response);
+    }
+
     private bool CheckIsAdmin(UserAccessTokenData? user)
     {
         return (user == null || user.Role != Roles.Admin) ? false : true;
