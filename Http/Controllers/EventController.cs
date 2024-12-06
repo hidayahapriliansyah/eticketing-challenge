@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using eticketing.Application.Services;
+using eticketing.Http.Filters;
 using eticketing.Http.Requests;
 using eticketing.Http.Responses;
 using eticketing.Infrastructure.Database;
@@ -27,6 +28,7 @@ public class EventController(EventService eventService) : ControllerBase
     }
 
     [HttpPost]
+    [RoleAuthorize("Admin")]
     public async Task<ActionResult<ApiResponse<CreateEventResponse>>> CreateEvent(
         [FromBody] CreateEventRequest request
     )
