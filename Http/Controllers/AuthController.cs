@@ -52,4 +52,41 @@ public class AuthController(JwtService jwtService, ETicketingDbContext dbContext
 
         return Ok(response);
     }
+
+    [HttpPost("customer/login")]
+    public async Task<ActionResult<ApiResponse<LoginResponse>>> CustomerLogin(
+        [FromBody] LoginRequest request
+    )
+    {
+        if (
+            request == null
+            || string.IsNullOrEmpty(request.Email)
+            || string.IsNullOrEmpty(request.Password)
+        )
+        {
+            throw new BadRequestException("payload data is not valid");
+        }
+
+        var customer =
+            await _dbContext.Customer.FirstOrDefaultAsync(a => a.Email == request.Email)
+            ?? throw new UnauthenticatedException("invalid credential");
+        bool isValidPassword = PasswordHasher.ValidatePassword(request.Password, customer.Password);
+
+        if (!isValidPassword)
+        {
+            throw new UnauthenticatedException("invalid credential");
+        }
+
+        var userAccessTokenData = new UserAccessTokenData(customer.Id, Roles.Customer);
+        var token = _jwtService.Create(userAccessTokenData);
+
+        var response = new ApiResponse<LoginResponse>
+        {
+            Success = true,
+            Message = "success login",
+            Data = new LoginResponse { Token = token, Role = "Customer" },
+        };
+
+        return Ok(response);
+    }
 }
