@@ -19,6 +19,8 @@ builder.Services.AddTransient<JwtService>();
 builder.Services.AddTransient<AuthMiddleware>();
 builder.Services.AddTransient<EventService>();
 builder.Services.AddTransient<EventRepository>();
+builder.Services.AddTransient<CustomerService>();
+builder.Services.AddTransient<CustomerRepository>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

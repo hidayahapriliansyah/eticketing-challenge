@@ -1,4 +1,5 @@
 using eticketing.Application.Security;
+using eticketing.Application.Services;
 using eticketing.Exceptions;
 using eticketing.Http.Requests;
 using eticketing.Http.Responses;
@@ -11,10 +12,15 @@ namespace eticketing.Http.Controllers;
 
 [Route("api")]
 [ApiController]
-public class AuthController(JwtService jwtService, ETicketingDbContext dbContext) : ControllerBase
+public class AuthController(
+    JwtService jwtService,
+    ETicketingDbContext dbContext,
+    CustomerService customerService
+) : ControllerBase
 {
     private readonly JwtService _jwtService = jwtService;
     private readonly ETicketingDbContext _dbContext = dbContext;
+    private readonly CustomerService _customerService = customerService;
 
     [HttpPost("admin/login")]
     public async Task<ActionResult<ApiResponse<LoginResponse>>> AdminLogin(
@@ -88,5 +94,14 @@ public class AuthController(JwtService jwtService, ETicketingDbContext dbContext
         };
 
         return Ok(response);
+    }
+
+    [HttpPost("customers")]
+    public async Task<ActionResult<ApiResponse<RegisterCustomerReponse>>> RegisterCustomer(
+        [FromBody] RegisterCustomerRequest request
+    )
+    {
+        var response = await _customerService.CreateCustomer(request);
+        return CreatedAtAction(nameof(CustomerLogin), new { id = response.Data!.Id }, response);
     }
 }
