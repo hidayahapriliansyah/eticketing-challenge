@@ -24,14 +24,17 @@ public class Ticket : Base
     [Column(name: "event_id")]
     public Guid EventId { get; set; }
 
+    [Column(name: "expired_at")]
+    public DateTime ExpiredAt { get; set; }
+
     public Customer User { get; set; } = null!;
     public Event Event { get; set; } = null!;
 
     public enum TicketStatus
     {
-        Pending,
-        Expired,
-        Confirmed,
-        Cancelled,
+        Pending = 0,
+        Expired = 1,
+        Confirmed = 2,
+        Cancelled = 3,
     }
 }
