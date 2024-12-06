@@ -48,6 +48,17 @@ public class EventController(EventService eventService) : ControllerBase
         return Ok(response);
     }
 
+    [HttpPut("{eventId}")]
+    [RoleAuthorize("Admin")]
+    public async Task<ActionResult<ApiResponse<UpdateEventResponse>>> UpdateEventAsync(
+        Guid eventId,
+        [FromBody] UpdateEventRequest request
+    )
+    {
+        var response = await _eventService.UpdateEventAsync(eventId, request);
+        return Ok(response);
+    }
+
     private bool CheckIsAdmin(UserAccessTokenData? user)
     {
         return (user == null || user.Role != Roles.Admin) ? false : true;

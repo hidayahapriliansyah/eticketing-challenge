@@ -95,6 +95,37 @@ public class EventService(EventRepository eventRepository)
         return response;
     }
 
+    public async Task<ApiResponse<UpdateEventResponse>> UpdateEventAsync(
+        Guid eventId,
+        UpdateEventRequest request
+    )
+    {
+        var updatedEvent =
+            await _eventRepository.UpdateEventAsyncOrReturnNull(eventId, request)
+            ?? throw new NotFoundException("Event is not found");
+
+        var response = new ApiResponse<UpdateEventResponse>
+        {
+            Success = true,
+            Message = "success to update event",
+            Data = new UpdateEventResponse
+            {
+                Event = new EventDTO
+                {
+                    Id = updatedEvent.Id,
+                    Name = updatedEvent.Name,
+                    EventDate = updatedEvent.EventDate,
+                    Location = updatedEvent.Location,
+                    MaxParticipants = updatedEvent.MaxParticipants,
+                    TicketPrice = updatedEvent.TicketPrice,
+                    Status = updatedEvent.Status.ToString(),
+                },
+            },
+        };
+
+        return response;
+    }
+
     public EventDTO ToEventDTO(Event eventItem)
     {
         return new EventDTO

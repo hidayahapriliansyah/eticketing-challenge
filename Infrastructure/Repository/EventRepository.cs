@@ -55,6 +55,38 @@ public class EventRepository(ETicketingDbContext dbContext)
         return eventEntity;
     }
 
+    public async Task<Event?> UpdateEventAsyncOrReturnNull(Guid eventId, UpdateEventRequest request)
+    {
+        var eventToUpdate = await GetEventByIdAsync(eventId);
+        if (eventToUpdate == null)
+            return null;
+
+        Console.WriteLine("request status => " + request.Status);
+
+        eventToUpdate.Name = request.Name;
+        eventToUpdate.Description = request.Description;
+        eventToUpdate.EventDate = request.EventDate;
+        eventToUpdate.Location = request.Location;
+        eventToUpdate.MaxParticipants = request.MaxParticipants;
+        eventToUpdate.AdditionalInfo = request.AdditionalInfo;
+        eventToUpdate.TicketPrice = request.TicketPrice;
+        eventToUpdate.Status = request.Status;
+
+        await _dbContext.SaveChangesAsync();
+        return new Event
+        {
+            Id = eventToUpdate.Id,
+            Name = eventToUpdate.Name,
+            Description = eventToUpdate.Description,
+            EventDate = eventToUpdate.EventDate,
+            Location = eventToUpdate.Location,
+            MaxParticipants = eventToUpdate.MaxParticipants,
+            AdditionalInfo = eventToUpdate.AdditionalInfo,
+            TicketPrice = eventToUpdate.TicketPrice,
+            Status = eventToUpdate.Status,
+        };
+    }
+
     public async Task<Event?> GetEventByIdAsync(Guid eventId)
     {
         return await _dbContext.Event.FirstOrDefaultAsync(e => e.Id == eventId);

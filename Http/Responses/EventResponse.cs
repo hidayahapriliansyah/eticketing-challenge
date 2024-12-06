@@ -24,3 +24,8 @@ public class CreateEventResponse
 }
 
 public class GetEventByIdResponse : EventDTO { }
+
+public class UpdateEventResponse
+{
+    public EventDTO Event { get; set; } = null!;
+}
