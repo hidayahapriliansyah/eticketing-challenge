@@ -37,6 +37,12 @@ public class ETicketingDbContext(DbContextOptions<ETicketingDbContext> options) 
         modelBuilder.Entity<Ticket>().HasIndex(ticket => ticket.Code).IsUnique();
 
         modelBuilder
+            .Entity<Event>()
+            .HasIndex(e => e.Status)
+            .HasDatabaseName("IX_Event_Status_Published")
+            .HasFilter("[status] = 1");
+
+        modelBuilder
             .Entity<Ticket>()
             .Property(ticket => ticket.Status)
             .HasDefaultValue(eticketing.Models.Ticket.TicketStatus.Pending);
