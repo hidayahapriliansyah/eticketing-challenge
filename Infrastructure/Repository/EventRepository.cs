@@ -50,9 +50,13 @@ public class EventRepository(ETicketingDbContext dbContext)
 
     public async Task<Event> CreateEventAsync(Event eventEntity)
     {
-        Console.WriteLine("Repository Create Event Request Invoked ...");
         _dbContext.Set<Event>().Add(eventEntity);
         await _dbContext.SaveChangesAsync();
         return eventEntity;
+    }
+
+    public async Task<Event?> GetEventByIdAsync(Guid eventId)
+    {
+        return await _dbContext.Event.FirstOrDefaultAsync(e => e.Id == eventId);
     }
 }

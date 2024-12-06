@@ -62,9 +62,6 @@ public class JwtService
 
         var jwtToken = (JwtSecurityToken)validatedToken;
 
-        Console.WriteLine("jwtToken =>" + jwtToken);
-        Console.WriteLine("jwtToken Claims =>" + jwtToken.Claims);
-
         var user = jwtToken.ToUserAccessTokenData();
         return user;
     }

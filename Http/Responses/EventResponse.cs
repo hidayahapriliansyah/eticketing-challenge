@@ -22,3 +22,5 @@ public class CreateEventResponse
 {
     public EventDTO Event { get; set; } = null!;
 }
+
+public class GetEventByIdResponse : EventDTO { }

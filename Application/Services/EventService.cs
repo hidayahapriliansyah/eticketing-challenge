@@ -1,3 +1,5 @@
+using Azure;
+using eticketing.Exceptions;
 using eticketing.Http.Requests;
 using eticketing.Http.Responses;
 using eticketing.Infrastructure.Repository;
@@ -56,22 +58,54 @@ public class EventService(EventRepository eventRepository)
         {
             Success = true,
             Message = "success to create event",
-            Data = new CreateEventResponse
-            {
-                Event = new EventDTO
-                {
-                    Id = createdEvent.Id,
-                    EventDate = createdEvent.EventDate,
-                    Location = createdEvent.Location,
-                    MaxParticipants = createdEvent.MaxParticipants,
-                    Name = createdEvent.Name,
-                    Status = createdEvent.Status.ToString(),
-                    TicketPrice = createdEvent.TicketPrice,
-                },
-            },
+            Data = new CreateEventResponse { Event = ToEventDTO(createdEvent) },
             Pagination = null,
         };
 
         return response;
+    }
+
+    public async Task<ApiResponse<GetEventByIdResponse>> GetEventByIdAsync(
+        Guid eventId,
+        bool isAdmin
+    )
+    {
+        var eventItem = await _eventRepository.GetEventByIdAsync(eventId);
+
+        if ((eventItem == null) || (!isAdmin && eventItem.Status == EventStatus.Unpublished))
+        {
+            throw new NotFoundException("Event id is not found.");
+        }
+
+        var response = new ApiResponse<GetEventByIdResponse>
+        {
+            Success = true,
+            Message = "success to get event detail",
+            Data = new GetEventByIdResponse
+            {
+                Id = eventItem.Id,
+                EventDate = eventItem.EventDate,
+                Location = eventItem.Location,
+                MaxParticipants = eventItem.MaxParticipants,
+                Name = eventItem.Name,
+                Status = eventItem.Status.ToString(),
+                TicketPrice = eventItem.TicketPrice,
+            },
+        };
+        return response;
+    }
+
+    public EventDTO ToEventDTO(Event eventItem)
+    {
+        return new EventDTO
+        {
+            Id = eventItem.Id,
+            EventDate = eventItem.EventDate,
+            Location = eventItem.Location,
+            MaxParticipants = eventItem.MaxParticipants,
+            Name = eventItem.Name,
+            Status = eventItem.Status.ToString(),
+            TicketPrice = eventItem.TicketPrice,
+        };
     }
 }
