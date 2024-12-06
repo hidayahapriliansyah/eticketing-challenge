@@ -45,7 +45,7 @@ public class ETicketingDbContext(DbContextOptions<ETicketingDbContext> options) 
         modelBuilder
             .Entity<Ticket>()
             .Property(ticket => ticket.Status)
-            .HasDefaultValue(eticketing.Models.Ticket.TicketStatus.Pending);
+            .HasDefaultValue(TicketStatus.Pending);
 
         Seeder(modelBuilder);
     }

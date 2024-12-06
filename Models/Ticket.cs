@@ -29,12 +29,12 @@ public class Ticket : Base
 
     public Customer User { get; set; } = null!;
     public Event Event { get; set; } = null!;
+}
 
-    public enum TicketStatus
-    {
-        Pending = 0,
-        Expired = 1,
-        Confirmed = 2,
-        Cancelled = 3,
-    }
+public enum TicketStatus
+{
+    Pending = 0,
+    Expired = 1,
+    Confirmed = 2,
+    Cancelled = 3,
 }
