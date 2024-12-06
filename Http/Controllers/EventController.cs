@@ -54,6 +54,7 @@ public class EventController(EventService eventService) : ControllerBase
     }
 }
 
+// jangan campurkan class di sini 
 public class RandomType
 {
     public required string Title { get; set; }
