@@ -44,7 +44,8 @@
       "location": "string",
       "max_participants": "int",
       "additional_info": "string",
-      "ticket_price": "int"
+      "ticket_price": "int",
+      "status": "enum (published, unpublished)"
     }
     ```
 

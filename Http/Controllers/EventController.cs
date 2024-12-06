@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using eticketing.Application.Services;
 using eticketing.Http.Requests;
 using eticketing.Http.Responses;
@@ -20,13 +21,43 @@ public class EventController(EventService eventService) : ControllerBase
     )
     {
         var user = HttpContext.Items["User"] as UserAccessTokenData;
-        bool isAdmin = _checkIsAdmin(user);
+        bool isAdmin = CheckIsAdmin(user);
         var response = await _eventService.GetEventsAsync(request, isAdmin);
         return Ok(response);
     }
 
-    private bool _checkIsAdmin(UserAccessTokenData? user)
+    [HttpPost]
+    public async Task<ActionResult<ApiResponse<CreateEventResponse>>> CreateEvent(
+        [FromBody] CreateEventRequest request
+    )
+    {
+        Console.WriteLine("Controller Create Event Request Invoked ...");
+
+        var response = await _eventService.CreateEventAsync(request);
+
+        Console.WriteLine("sebelum kirim response nih Controller Create Event Request Invoked ...");
+
+        return CreatedAtAction("GetEvents", new { id = response.Data!.Event.Id }, response);
+    }
+
+    [HttpPost("oy")]
+    public ActionResult TestAja([FromBody] RandomType request)
+    {
+        Console.WriteLine("ok");
+        Console.WriteLine("request => " + request);
+        return Ok();
+    }
+
+    private bool CheckIsAdmin(UserAccessTokenData? user)
     {
         return (user == null || user.Role != Roles.Admin) ? false : true;
     }
+}
+
+public class RandomType
+{
+    public required string Title { get; set; }
+
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public EventStatus Status { get; set; }
 }

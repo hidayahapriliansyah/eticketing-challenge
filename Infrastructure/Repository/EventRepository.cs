@@ -47,4 +47,12 @@ public class EventRepository(ETicketingDbContext dbContext)
 
         return (events, totalData, totalPages);
     }
+
+    public async Task<Event> CreateEventAsync(Event eventEntity)
+    {
+        Console.WriteLine("Repository Create Event Request Invoked ...");
+        _dbContext.Set<Event>().Add(eventEntity);
+        await _dbContext.SaveChangesAsync();
+        return eventEntity;
+    }
 }

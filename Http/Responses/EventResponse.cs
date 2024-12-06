@@ -1,3 +1,5 @@
+using eticketing.Models;
+
 namespace eticketing.Http.Responses;
 
 public class EventDTO
@@ -14,4 +16,9 @@ public class EventDTO
 public class GetEventResponse
 {
     public List<EventDTO> Events { get; set; } = [];
+}
+
+public class CreateEventResponse
+{
+    public EventDTO Event { get; set; } = null!;
 }

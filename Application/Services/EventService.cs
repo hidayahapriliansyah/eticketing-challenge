@@ -1,6 +1,7 @@
 using eticketing.Http.Requests;
 using eticketing.Http.Responses;
 using eticketing.Infrastructure.Repository;
+using eticketing.Models;
 
 namespace eticketing.Application.Services;
 
@@ -31,6 +32,46 @@ public class EventService(EventRepository eventRepository)
                 PageSize = request.Limit,
             },
         };
+        return response;
+    }
+
+    public async Task<ApiResponse<CreateEventResponse>> CreateEventAsync(CreateEventRequest request)
+    {
+        var eventEntity = new Event
+        {
+            Id = Guid.NewGuid(),
+            Name = request.Name,
+            Description = request.Description,
+            EventDate = request.EventDate,
+            Location = request.Location,
+            AdditionalInfo = request.AdditionalInfo,
+            MaxParticipants = request.MaxParticipants,
+            Status = request.Status,
+            TicketPrice = request.TicketPrice,
+        };
+
+        var createdEvent = await _eventRepository.CreateEventAsync(eventEntity);
+
+        var response = new ApiResponse<CreateEventResponse>
+        {
+            Success = true,
+            Message = "success to create event",
+            Data = new CreateEventResponse
+            {
+                Event = new EventDTO
+                {
+                    Id = createdEvent.Id,
+                    EventDate = createdEvent.EventDate,
+                    Location = createdEvent.Location,
+                    MaxParticipants = createdEvent.MaxParticipants,
+                    Name = createdEvent.Name,
+                    Status = createdEvent.Status.ToString(),
+                    TicketPrice = createdEvent.TicketPrice,
+                },
+            },
+            Pagination = null,
+        };
+
         return response;
     }
 }
