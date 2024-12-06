@@ -133,6 +133,21 @@ public class ETicketingDbContext(DbContextOptions<ETicketingDbContext> options) 
                 }
             );
 
+        var customerId = Guid.NewGuid();
+
+        modelBuilder
+            .Entity<Customer>()
+            .HasData(
+                new Customer
+                {
+                    Id = customerId,
+                    Email = "customer@customer.com",
+                    Password = "8cb671ed74c9c851fee146b8e0c3d951feb9dcccbdd92203316d6259c77c2744", // sangatrahasia
+                    Username = "cusomer",
+                    Name = "John Doe",
+                }
+            );
+
         var eventId1 = Guid.NewGuid();
         var eventId2 = Guid.NewGuid();
         var eventId3 = Guid.NewGuid();
