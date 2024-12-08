@@ -23,21 +23,17 @@ public class TicketController(TicketService ticketService) : ControllerBase
         return CreatedAtAction(nameof(GetTicketDetail), new { Id = response.Data!.Id }, response);
     }
 
-    [HttpGet("tickets/{ticketId}")]
+    [HttpGet("tickets")]
     [RoleAuthorize("Admin", "Customer")]
     public async Task<ActionResult<ApiResponse<GetTicketsResponse>>> GetTickets(
-        IndexRequest request,
-        Guid customerId
+        IndexRequest request
     )
     {
         var user = HttpContext.Items["User"] as UserAccessTokenData;
         bool isAdmin = user!.Role == Roles.Admin;
-        var response = await GetTicketsForCustomer(request, customerId);
-        if (isAdmin)
-        {
-            response = await GetTicketsForAdmin(request);
-        }
-        return response;
+        return isAdmin
+            ? await GetTicketsForAdmin(request)
+            : await GetTicketsForCustomer(request, user.Id);
     }
 
     public async Task<ActionResult<ApiResponse<GetTicketsResponse>>> GetTicketsForCustomer(
