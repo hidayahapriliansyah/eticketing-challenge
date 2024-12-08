@@ -497,8 +497,7 @@
     Body Payload:
     ```json
       {
-        "eventId": "int",
-        "ticket_count": "int",
+        "eventId": "string",
       }
     ```  
 
