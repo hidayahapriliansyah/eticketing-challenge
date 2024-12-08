@@ -31,9 +31,10 @@ public class TicketController(TicketService ticketService) : ControllerBase
     {
         var user = HttpContext.Items["User"] as UserAccessTokenData;
         bool isAdmin = user!.Role == Roles.Admin;
-        return isAdmin
+        var response = isAdmin
             ? await GetTicketsForAdmin(request)
             : await GetTicketsForCustomer(request, user.Id);
+        return Ok(response);
     }
 
     public async Task<ActionResult<ApiResponse<GetTicketsResponse>>> GetTicketsForCustomer(
@@ -41,14 +42,16 @@ public class TicketController(TicketService ticketService) : ControllerBase
         Guid customerId
     )
     {
-        return await _ticketService.GetShortTicketList(request, customerId);
+        var response = await _ticketService.GetShortTicketList(request, customerId);
+        return Ok(response);
     }
 
     public async Task<ActionResult<ApiResponse<GetTicketsResponse>>> GetTicketsForAdmin(
         IndexRequest request
     )
     {
-        return await _ticketService.GetShortTicketList(request, null);
+        var response = await _ticketService.GetShortTicketList(request, null);
+        return Ok(response);
     }
 
     [HttpGet("tickets/{ticketId}")]
