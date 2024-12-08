@@ -57,4 +57,15 @@ public class TicketRepository(ETicketingDbContext dbContext)
 
         return (tickets, totalData, totalPages);
     }
+
+    public async Task UpdateTicketStatus(UpdateTicketRequest request, Ticket ticketEntity)
+    {
+        ticketEntity.Status = request.Status;
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task<Ticket?> FindTicket(Guid ticketId)
+    {
+        return await _dbContext.Ticket.FirstOrDefaultAsync(t => t.Id == ticketId);
+    }
 }

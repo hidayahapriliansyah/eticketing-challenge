@@ -68,4 +68,15 @@ public class TicketController(TicketService ticketService) : ControllerBase
 
         return response;
     }
+
+    [HttpPut("tickets/{ticketId}")]
+    [RoleAuthorize("Admin")]
+    public async Task<ActionResult<ApiResponse<object>>> UpdateTicketStatus(
+        [FromBody] UpdateTicketRequest request,
+        Guid ticketId
+    )
+    {
+        var response = await _ticketService.UpdateTicketStatus(request, ticketId);
+        return Ok(response);
+    }
 }

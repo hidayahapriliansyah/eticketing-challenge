@@ -61,8 +61,6 @@ public class EventRepository(ETicketingDbContext dbContext)
         if (eventToUpdate == null)
             return null;
 
-        Console.WriteLine("request status => " + request.Status);
-
         eventToUpdate.Name = request.Name;
         eventToUpdate.Description = request.Description;
         eventToUpdate.EventDate = request.EventDate;

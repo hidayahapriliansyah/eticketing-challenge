@@ -3,6 +3,7 @@ using eticketing.Http.Requests;
 using eticketing.Http.Responses;
 using eticketing.Infrastructure.Repository;
 using eticketing.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace eticketing.Application.Services;
 
@@ -82,6 +83,23 @@ public class TicketService(TicketRepository ticketRepository, EventRepository ev
             },
         };
 
+        return response;
+    }
+
+    public async Task<ApiResponse<object>> UpdateTicketStatus(
+        UpdateTicketRequest request,
+        Guid ticketId
+    )
+    {
+        var ticket =
+            await _ticketRepository.FindTicket(ticketId)
+            ?? throw new NotFoundException("Ticket is not found.");
+        await _ticketRepository.UpdateTicketStatus(request, ticket);
+        var response = new ApiResponse<object>
+        {
+            Success = true,
+            Message = "success to update ticket status",
+        };
         return response;
     }
 
