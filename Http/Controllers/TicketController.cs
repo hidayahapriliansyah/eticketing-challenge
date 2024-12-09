@@ -20,7 +20,12 @@ public class TicketController(TicketService ticketService) : ControllerBase
         [FromBody] CheckoutTicketRequest request
     )
     {
-        var user = HttpContext.Items["User"] as UserAccessTokenData;
+        HttpContext.Items.TryGetValue("User", out var userData);
+        if (userData == null)
+        {
+            throw new UnauthenticatedException();
+        }
+        var user = userData as UserAccessTokenData;
         var response = await _ticketService.CreateTicket(request, user!.Id);
         return CreatedAtAction("GetTickets", new { TicketId = response.Data!.Id }, response);
     }
@@ -31,13 +36,7 @@ public class TicketController(TicketService ticketService) : ControllerBase
         IndexRequest request
     )
     {
-        HttpContext.Items.TryGetValue("User", out var userData);
-        if (userData == null)
-        {
-            throw new UnauthenticatedException();
-        }
-
-        var user = userData as UserAccessTokenData;
+        var user = HttpContext.Items["User"] as UserAccessTokenData;
         bool isAdmin = user!.Role == Roles.Admin;
         var response = isAdmin
             ? await GetTicketsForAdmin(request)

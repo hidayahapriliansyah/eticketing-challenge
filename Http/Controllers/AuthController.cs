@@ -5,6 +5,7 @@ using eticketing.Http.Requests;
 using eticketing.Http.Responses;
 using eticketing.Infrastructure.Database;
 using eticketing.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +24,7 @@ public class AuthController(
     private readonly CustomerService _customerService = customerService;
 
     [HttpPost("admin/login")]
+    [AllowAnonymous]
     public async Task<ActionResult<ApiResponse<LoginResponse>>> AdminLogin(
         [FromBody] LoginRequest request
     )
@@ -60,6 +62,7 @@ public class AuthController(
     }
 
     [HttpPost("customer/login")]
+    [AllowAnonymous]
     public async Task<ActionResult<ApiResponse<LoginResponse>>> CustomerLogin(
         [FromBody] LoginRequest request
     )

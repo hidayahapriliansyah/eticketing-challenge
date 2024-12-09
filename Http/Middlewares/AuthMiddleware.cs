@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using eticketing.Application.Security;
 using eticketing.Configuration;
+using eticketing.Exceptions;
 using eticketing.Helper;
 using Microsoft.IdentityModel.Tokens;
 
@@ -26,7 +27,9 @@ public class AuthMiddleware : IMiddleware
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Authentication failed: {ex.Message}");
+                throw new UnauthenticatedException();
+                // throw un authenticated if jwt is expired berdasarkan message
+                // Console.WriteLine($"Authentication failed: {ex.Message}");
             }
         }
         await next(context);
