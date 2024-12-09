@@ -39,7 +39,7 @@ builder.Services.AddQuartz(opt =>
         trigger
             .ForJob(nameof(UpdateTicketExpiredJob))
             .WithIdentity(nameof(UpdateTicketExpiredJob))
-            .WithCronSchedule("0/15 * * * * ?")
+            .WithCronSchedule("0 0 0 * * ?")
             .StartNow();
     });
 });

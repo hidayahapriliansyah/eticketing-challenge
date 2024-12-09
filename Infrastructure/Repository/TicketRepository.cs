@@ -50,7 +50,7 @@ public class TicketRepository(ETicketingDbContext dbContext)
             {
                 Id = t.Id,
                 ExpiredAt = t.ExpiredAt,
-                Status = t.Status,
+                Status = t.Status.ToString(),
                 UserId = t.UserId,
             })
             .ToListAsync();

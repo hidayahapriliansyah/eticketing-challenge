@@ -59,7 +59,7 @@ public class TicketService(TicketRepository ticketRepository, EventRepository ev
                 Ticket = new TicketDetailDTO
                 {
                     Id = ticket.Id,
-                    Status = ticket.Status,
+                    Status = ticket.Status.ToString(),
                     ExpiredAt = ticket.ExpiredAt,
                     User = new UserDTO
                     {
@@ -76,7 +76,7 @@ public class TicketService(TicketRepository ticketRepository, EventRepository ev
                         Location = ticket.Event.Location,
                         MaxParticipants = ticket.Event.MaxParticipants,
                         Name = ticket.Event.Name,
-                        Status = ticket.Event.Status,
+                        Status = ticket.Event.Status.ToString(),
                         TicketPrice = ticket.Event.TicketPrice,
                     },
                 },

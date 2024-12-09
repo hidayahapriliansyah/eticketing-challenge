@@ -6,6 +6,8 @@ using eticketing.Http.Responses;
 using eticketing.Models;
 using Microsoft.AspNetCore.Mvc;
 
+namespace eticketing.Http.Controllers;
+
 [ApiController]
 [Route("api")]
 public class TicketController(TicketService ticketService) : ControllerBase
@@ -20,7 +22,7 @@ public class TicketController(TicketService ticketService) : ControllerBase
     {
         var user = HttpContext.Items["User"] as UserAccessTokenData;
         var response = await _ticketService.CreateTicket(request, user!.Id);
-        return CreatedAtAction(nameof(GetTicketDetail), new { Id = response.Data!.Id }, response);
+        return CreatedAtAction("GetTickets", new { TicketId = response.Data!.Id }, response);
     }
 
     [HttpGet("tickets")]
@@ -29,29 +31,35 @@ public class TicketController(TicketService ticketService) : ControllerBase
         IndexRequest request
     )
     {
-        var user = HttpContext.Items["User"] as UserAccessTokenData;
+        HttpContext.Items.TryGetValue("User", out var userData);
+        if (userData == null)
+        {
+            throw new UnauthenticatedException();
+        }
+
+        var user = userData as UserAccessTokenData;
         bool isAdmin = user!.Role == Roles.Admin;
         var response = isAdmin
             ? await GetTicketsForAdmin(request)
             : await GetTicketsForCustomer(request, user.Id);
+
+        Console.WriteLine("response controller => " + response);
         return Ok(response);
     }
 
-    public async Task<ActionResult<ApiResponse<GetTicketsResponse>>> GetTicketsForCustomer(
+    public async Task<ApiResponse<GetTicketsResponse>> GetTicketsForCustomer(
         IndexRequest request,
         Guid customerId
     )
     {
         var response = await _ticketService.GetShortTicketList(request, customerId);
-        return Ok(response);
+        return response;
     }
 
-    public async Task<ActionResult<ApiResponse<GetTicketsResponse>>> GetTicketsForAdmin(
-        IndexRequest request
-    )
+    public async Task<ApiResponse<GetTicketsResponse>> GetTicketsForAdmin(IndexRequest request)
     {
         var response = await _ticketService.GetShortTicketList(request, null);
-        return Ok(response);
+        return response;
     }
 
     [HttpGet("tickets/{ticketId}")]
@@ -60,7 +68,13 @@ public class TicketController(TicketService ticketService) : ControllerBase
         Guid ticketId
     )
     {
-        var user = HttpContext.Items["User"] as UserAccessTokenData;
+        HttpContext.Items.TryGetValue("User", out var userData);
+        if (userData == null)
+        {
+            throw new UnauthenticatedException();
+        }
+
+        var user = userData as UserAccessTokenData;
         var response = await _ticketService.GetTicketDetailWithUserAndEvent(ticketId);
         bool isCustomer = user!.Role == Roles.Customer;
 

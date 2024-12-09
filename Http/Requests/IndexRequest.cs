@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eticketing.Http.Requests;
 
-public class IndexRequest(int limit = 10, int page = 1)
+public class IndexRequest
 {
     [FromQuery(Name = "limit")]
-    public int Limit { get; set; } = limit;
+    public int Limit { get; set; } = 10;
 
     [FromQuery(Name = "page")]
-    public int Page { get; set; } = page;
+    public int Page { get; set; } = 1; // Nilai default 1
 }

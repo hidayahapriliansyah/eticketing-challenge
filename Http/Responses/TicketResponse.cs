@@ -17,7 +17,7 @@ public class TicketDetailDTO
 {
     public Guid Id { get; set; }
     public TicketEventDetailDTO Event { get; set; } = null!;
-    public TicketStatus Status { get; set; }
+    public string Status { get; set; } = null!;
     public DateTime ExpiredAt { get; set; }
 
     public UserDTO User { get; set; } = null!;
@@ -41,14 +41,14 @@ public class TicketEventDetailDTO
     public int TicketPrice { get; set; }
     public int MaxParticipants { get; set; }
     public string AdditionalInfo { get; set; } = null!;
-    public EventStatus Status { get; set; }
+    public string Status { get; set; } = null!;
 }
 
 public class ShortTicketDTO
 {
     public Guid Id { get; set; }
     public Guid UserId { get; set; }
-    public TicketStatus Status { get; set; }
+    public string Status { get; set; } = null!;
     public DateTime ExpiredAt { get; set; }
 }
 
