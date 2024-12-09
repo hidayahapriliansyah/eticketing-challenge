@@ -29,7 +29,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// quartz
 builder.Services.AddQuartz(opt =>
 {
     opt.AddJob<UpdateTicketExpiredJob>(JobKey.Create(nameof(UpdateTicketExpiredJob)));
@@ -39,7 +38,7 @@ builder.Services.AddQuartz(opt =>
         trigger
             .ForJob(nameof(UpdateTicketExpiredJob))
             .WithIdentity(nameof(UpdateTicketExpiredJob))
-            .WithCronSchedule("0 0 0 * * ?")
+            .WithCronSchedule(builder.Configuration["CronJobs:UpdateTicketExpiredJob"]!)
             .StartNow();
     });
 });
