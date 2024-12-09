@@ -68,4 +68,13 @@ public class TicketRepository(ETicketingDbContext dbContext)
     {
         return await _dbContext.Ticket.FirstOrDefaultAsync(t => t.Id == ticketId);
     }
+
+    public async Task<List<Ticket>> GetUnupdatedExpiredTicket()
+    {
+        return await _dbContext
+            .Ticket.Where(t =>
+                t.Event.EventDate <= DateTime.Now && t.Status != TicketStatus.Expired
+            )
+            .ToListAsync();
+    }
 }

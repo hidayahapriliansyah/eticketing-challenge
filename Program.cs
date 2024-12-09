@@ -32,14 +32,14 @@ builder.Services.AddSwaggerGen();
 // quartz
 builder.Services.AddQuartz(opt =>
 {
-    Console.WriteLine("cron interval => " + builder.Configuration["CronJobs:Example"]!);
-    opt.AddJob<ExampleJob>(JobKey.Create(nameof(ExampleJob)));
+    opt.AddJob<UpdateTicketExpiredJob>(JobKey.Create(nameof(UpdateTicketExpiredJob)));
+
     opt.AddTrigger(trigger =>
     {
         trigger
-            .ForJob(nameof(ExampleJob))
-            .WithIdentity(nameof(ExampleJob))
-            .WithCronSchedule(builder.Configuration["CronJobs:Example"]!)
+            .ForJob(nameof(UpdateTicketExpiredJob))
+            .WithIdentity(nameof(UpdateTicketExpiredJob))
+            .WithCronSchedule("0/15 * * * * ?")
             .StartNow();
     });
 });
