@@ -2,8 +2,10 @@ using eticketing.Application.Security;
 using eticketing.Application.Services;
 using eticketing.Http.Middlewares;
 using eticketing.Infrastructure.Database;
+using eticketing.Infrastructure.Job;
 using eticketing.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
+using Quartz;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +26,23 @@ builder.Services.AddTransient<CustomerRepository>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// quartz
+builder.Services.AddQuartz(opt =>
+{
+    Console.WriteLine("cron interval => " + builder.Configuration["CronJobs:Example"]!);
+    opt.AddJob<ExampleJob>(JobKey.Create(nameof(ExampleJob)));
+    opt.AddTrigger(trigger =>
+    {
+        trigger
+            .ForJob(nameof(ExampleJob))
+            .WithIdentity(nameof(ExampleJob))
+            .WithCronSchedule(builder.Configuration["CronJobs:Example"]!)
+            .StartNow();
+    });
+});
+
+builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
 var app = builder.Build();
 
