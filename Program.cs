@@ -23,6 +23,8 @@ builder.Services.AddTransient<EventService>();
 builder.Services.AddTransient<EventRepository>();
 builder.Services.AddTransient<CustomerService>();
 builder.Services.AddTransient<CustomerRepository>();
+builder.Services.AddTransient<TicketService>();
+builder.Services.AddTransient<TicketRepository>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
